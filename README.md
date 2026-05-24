@@ -16,6 +16,12 @@ Track candidates are extracted via connected components on edges above a score t
 
 ## Architecture
 
+![Two-stage pipeline: metric-learning embeddings → Interaction Network edge classification → track building](docs/pipeline.svg)
+
+### Interaction Network Detail
+
+![Interaction Network message-passing architecture with training losses and evaluation metrics](docs/interaction_network.svg)
+
 ```
 Raw Hits (24-D)
     │

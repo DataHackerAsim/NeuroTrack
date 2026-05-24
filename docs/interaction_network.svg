@@ -1,0 +1,76 @@
+<svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="a2" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,1 L10,5 L0,9Z" fill="#64748b"/>
+    </marker>
+    <filter id="s2" x="-2%" y="-6%" width="104%" height="116%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <rect width="700" height="340" fill="#f8fafc" rx="8"/>
+  <text x="350" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">Interaction Network — Message Passing Detail</text>
+
+  <!-- Input -->
+  <rect x="20" y="55" width="130" height="90" rx="8" fill="white" stroke="#3b82f6" stroke-width="1.5" filter="url(#s2)"/>
+  <text x="85" y="78" text-anchor="middle" font-size="11" font-weight="600" fill="#1d4ed8">Input</text>
+  <text x="85" y="96" text-anchor="middle" font-size="9" fill="#64748b">Node features (N, D)</text>
+  <text x="85" y="110" text-anchor="middle" font-size="9" fill="#64748b">Edge features (E, F)</text>
+  <text x="85" y="124" text-anchor="middle" font-size="9" fill="#64748b">Edge index (2, E)</text>
+
+  <line x1="150" y1="100" x2="178" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <!-- Iteration block -->
+  <rect x="185" y="42" width="330" height="125" rx="10" fill="#fef3c7" stroke="#fde68a" stroke-width="1.5" filter="url(#s2)"/>
+  <text x="350" y="62" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e" letter-spacing="0.5">× 8 ITERATIONS (gradient checkpointed)</text>
+
+  <!-- Relational MLP -->
+  <rect x="200" y="75" width="140" height="75" rx="7" fill="white" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="270" y="96" text-anchor="middle" font-size="10.5" font-weight="600" fill="#92400e">Relational MLP</text>
+  <text x="270" y="112" text-anchor="middle" font-size="9" fill="#64748b">Input: concat(src, dst, edge)</text>
+  <text x="270" y="126" text-anchor="middle" font-size="9" fill="#64748b">Output: updated edge feat</text>
+  <text x="270" y="140" text-anchor="middle" font-size="9" fill="#64748b">LayerNorm + GELU</text>
+
+  <line x1="340" y1="113" x2="358" y2="113" stroke="#64748b" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <!-- Object MLP -->
+  <rect x="365" y="75" width="140" height="75" rx="7" fill="white" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="435" y="96" text-anchor="middle" font-size="10.5" font-weight="600" fill="#92400e">Object MLP</text>
+  <text x="435" y="112" text-anchor="middle" font-size="9" fill="#64748b">Input: node + Σ(edge)</text>
+  <text x="435" y="126" text-anchor="middle" font-size="9" fill="#64748b">Output: updated node feat</text>
+  <text x="435" y="140" text-anchor="middle" font-size="9" fill="#64748b">LayerNorm + GELU</text>
+
+  <line x1="515" y1="100" x2="533" y2="100" stroke="#64748b" stroke-width="1.5" marker-end="url(#a2)"/>
+
+  <!-- Final edge MLP -->
+  <rect x="540" y="55" width="140" height="90" rx="8" fill="white" stroke="#ef4444" stroke-width="1.5" filter="url(#s2)"/>
+  <text x="610" y="78" text-anchor="middle" font-size="11" font-weight="600" fill="#b91c1c">Edge Classifier</text>
+  <text x="610" y="96" text-anchor="middle" font-size="9" fill="#64748b">Final MLP</text>
+  <text x="610" y="110" text-anchor="middle" font-size="9" fill="#64748b">1 logit per edge</text>
+  <text x="610" y="124" text-anchor="middle" font-size="9" fill="#64748b">σ → P(same track)</text>
+
+  <!-- Loss + Metrics boxes -->
+  <rect x="20" y="200" width="210" height="120" rx="8" fill="white" stroke="#8b5cf6" stroke-width="1.5" filter="url(#s2)"/>
+  <text x="125" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#5b21b6">Training Losses</text>
+  <text x="30" y="244" font-size="9.5" fill="#64748b">Stage 1: Hinge embedding loss</text>
+  <text x="30" y="260" font-size="9.5" fill="#64748b">  Semi-hard negative mining</text>
+  <text x="30" y="276" font-size="9.5" fill="#64748b">  256 anchors, margin = 1.0</text>
+  <text x="30" y="296" font-size="9.5" fill="#64748b">Stage 2: Focal BCE (γ=2, α=0.25)</text>
+  <text x="30" y="312" font-size="9.5" fill="#64748b">  Handles 1-5% true-edge ratio</text>
+
+  <rect x="260" y="200" width="200" height="120" rx="8" fill="white" stroke="#22c55e" stroke-width="1.5" filter="url(#s2)"/>
+  <text x="360" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#166534">Evaluation Metrics</text>
+  <text x="270" y="244" font-size="9.5" fill="#64748b">TrackML Score (official)</text>
+  <text x="270" y="260" font-size="9.5" fill="#64748b">Track Efficiency</text>
+  <text x="270" y="276" font-size="9.5" fill="#64748b">Fake Rate</text>
+  <text x="270" y="292" font-size="9.5" fill="#64748b">Edge AUC</text>
+  <text x="270" y="308" font-size="9.5" fill="#64748b">Embedding Recall@k</text>
+
+  <rect x="490" y="200" width="190" height="120" rx="8" fill="white" stroke="#06b6d4" stroke-width="1.5" filter="url(#s2)"/>
+  <text x="585" y="222" text-anchor="middle" font-size="11" font-weight="600" fill="#0e7490">Design Choices</text>
+  <text x="500" y="244" font-size="9.5" fill="#64748b">Pure PyTorch (no PyG)</text>
+  <text x="500" y="260" font-size="9.5" fill="#64748b">Gradient checkpointing</text>
+  <text x="500" y="276" font-size="9.5" fill="#64748b">bf16 mixed precision</text>
+  <text x="500" y="292" font-size="9.5" fill="#64748b">VRAM: &lt;2 GB (8K hits)</text>
+  <text x="500" y="308" font-size="9.5" fill="#64748b">torch.compile ready</text>
+</svg>
